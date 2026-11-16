@@ -5,6 +5,17 @@ import { createServer } from "vite";
 
 // Exercise the React loading/error transitions without pretending to render GL.
 const window = new Window({ url: "http://localhost/#/campus" });
+// Production loads campus CSS first, then MapLibre CSS on demand. MapLibre
+// adds .maplibregl-map { position: relative; overflow: hidden }, which must
+// never override the sized, absolutely positioned campus map host.
+for (const file of [
+  "../src/campus.css",
+  "../node_modules/maplibre-gl/dist/maplibre-gl.css",
+]) {
+  const style = window.document.createElement("style");
+  style.textContent = readFileSync(new URL(file, import.meta.url), "utf8");
+  window.document.head.append(style);
+}
 for (const key of [
   "window",
   "document",
@@ -42,6 +53,7 @@ class TestMap {
     this.events = new Map();
     this.sources = new Map();
     this.removed = false;
+    options.container.classList.add("maplibregl-map");
     this.canvas = document.createElement("canvas");
     options.container.append(this.canvas);
     for (const id of Object.keys(options.style.sources))
@@ -72,6 +84,9 @@ class TestMap {
     return this;
   }
   setPaintProperty() {
+    return this;
+  }
+  setLight() {
     return this;
   }
   setFilter() {
@@ -161,6 +176,25 @@ async function reset() {
 }
 try {
   let map = await mount();
+  const mapLayout = window.getComputedStyle(map.options.container);
+  assert.equal(
+    mapLayout.position,
+    "absolute",
+    "Lazy MapLibre CSS must not collapse the map container",
+  );
+  assert.equal(
+    mapLayout.height,
+    "100%",
+    "The map must fill the stage height after MapLibre styles load",
+  );
+  assert.equal(
+    mapLayout.width,
+    "100%",
+    "The map must fill the stage width after MapLibre styles load",
+  );
+  console.log(
+    "✓ Production stylesheet order preserves a full-size map container",
+  );
   assert.ok(map.options.style.sources.campus.data.features.length > 1000);
   assert.ok(map.options.style.sources.containers.data.features.length > 0);
   assert.ok(

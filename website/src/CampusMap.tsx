@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -20,6 +20,10 @@ import {
   Search,
   TrainFront,
   X,
+  Sun,
+  Moon,
+  Play,
+  Pause,
 } from "lucide-react";
 import type { Map as LibreMap, Marker, FilterSpecification } from "maplibre-gl";
 import type { FeatureCollection } from "geojson";
@@ -32,6 +36,7 @@ import {
 } from "./campus";
 import { createCampusStyle } from "./campusScene";
 import "./campus.css";
+const HubStudio = lazy(() => import("./HubStudio"));
 
 const DATA_URL = `${import.meta.env.BASE_URL}campus/qatar-university.geojson`;
 const reducedMotion = () =>
@@ -200,6 +205,9 @@ export default function CampusMap() {
     visibleKey = visible.join(",");
   const active = HUBS.find((h) => h.id === selected)!;
   const [retry, setRetry] = useState(0);
+  const [studioOpen, setStudioOpen] = useState(false),
+    [evening, setEvening] = useState(false),
+    [tour, setTour] = useState(false);
   function choose(id: string) {
     if (id === state.current.selected) {
       const hub = HUBS.find((h) => h.id === id)!;
@@ -288,6 +296,7 @@ export default function CampusMap() {
         map.getCanvas().addEventListener("webglcontextlost", onLost);
         map.on("load", () => {
           if (disposed || failed) return;
+          map.resize();
           for (const hub of HUBS) {
             const element = document.createElement("button");
             element.className = "hub-pin";
@@ -449,20 +458,57 @@ export default function CampusMap() {
     });
   }
   function inspect() {
-    setView("3d");
-    mapRef.current?.easeTo({
-      center: active.coordinates,
-      zoom: 20,
-      pitch: 67,
-      bearing: -34,
-      ...mapMotion(),
-    });
+    setTour(false);
+    setStudioOpen(true);
+    document
+      .querySelector(".campus-map-stage")
+      ?.scrollIntoView({
+        behavior: reducedMotion() ? "instant" : "smooth",
+        block: "center",
+      });
   }
   function next() {
     const index = filtered.findIndex((h) => h.id === selected);
     if (filtered.length)
       setSelected(filtered[(index + 1) % filtered.length].id);
   }
+  useEffect(() => {
+    if (!tour || status !== "ready" || filtered.length < 2) return;
+    const timer = setInterval(
+      () =>
+        setSelected((current) => {
+          const index = filtered.findIndex((h) => h.id === current);
+          return filtered[(index + 1) % filtered.length].id;
+        }),
+      6500,
+    );
+    return () => clearInterval(timer);
+  }, [tour, visibleKey, status]);
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || status !== "ready") return;
+    map.setLight({
+      anchor: "map",
+      color: evening ? "#c7daec" : "#fff1d5",
+      intensity: evening ? 0.3 : 0.55,
+      position: [1.5, evening ? 300 : 220, evening ? 70 : 40],
+    });
+    map.setPaintProperty(
+      "ground",
+      "background-color",
+      evening ? "#33473c" : "#eeeade",
+    );
+    map.setPaintProperty(
+      "buildings-3d",
+      "fill-extrusion-color",
+      evening ? "#708375" : "#dfd6c1",
+    );
+    map.setPaintProperty(
+      "land",
+      "fill-opacity",
+      evening ? 0.3 : streets ? 0.25 : 0.8,
+    );
+  }, [evening, status, streets]);
   return (
     <main className="campus-page container page-main">
       <a href="#/home" className="back-link">
@@ -603,7 +649,18 @@ export default function CampusMap() {
                 loading={status === "loading"}
               />
             )}
-            <div className="campus-map-top">
+            {studioOpen && (
+              <Suspense
+                fallback={
+                  <div className="studio-loading">
+                    Preparing the architecture studio…
+                  </div>
+                }
+              >
+                <HubStudio hub={active} onClose={() => setStudioOpen(false)} />
+              </Suspense>
+            )}
+            <div className="campus-map-top" inert={studioOpen}>
               <div className="campus-map-badge">
                 <span />
                 QU CAMPUS <span className="campus-badge-separator">/</span>{" "}
@@ -633,7 +690,7 @@ export default function CampusMap() {
                 </button>
               </div>
             </div>
-            <div className="campus-map-tools">
+            <div className="campus-map-tools" inert={studioOpen}>
               <button
                 aria-label="Zoom in on campus"
                 disabled={status !== "ready"}
@@ -682,7 +739,7 @@ export default function CampusMap() {
                 <Maximize size={17} />
               </button>
             </div>
-            <div className="campus-map-bottom">
+            <div className="campus-map-bottom" inert={studioOpen}>
               <button
                 className={`street-toggle ${streets ? "selected" : ""}`}
                 aria-pressed={streets}
@@ -695,6 +752,39 @@ export default function CampusMap() {
               <span className="campus-drag-hint">
                 Drag to explore · Right-drag to rotate
               </span>
+            </div>
+            <div className="campus-experience-bar" inert={studioOpen}>
+              <button className="campus-studio-launch" onClick={inspect}>
+                <Box size={16} />
+                <span>
+                  Architecture studio<small>Explore the hub in detail</small>
+                </span>
+                <ArrowUpRight size={16} />
+              </button>
+              <div className="campus-experience-controls">
+                <button
+                  disabled={status !== "ready"}
+                  aria-pressed={evening}
+                  onClick={() => setEvening(!evening)}
+                >
+                  {evening ? <Moon size={15} /> : <Sun size={15} />}
+                  <span>{evening ? "Evening" : "Daylight"}</span>
+                </button>
+                <button
+                  disabled={status !== "ready" || filtered.length < 2}
+                  aria-pressed={tour}
+                  onClick={() => {
+                    if (!tour) {
+                      next();
+                      setView("3d");
+                    }
+                    setTour(!tour);
+                  }}
+                >
+                  {tour ? <Pause size={14} /> : <Play size={14} />}
+                  <span>{tour ? "Pause tour" : "Tour campus"}</span>
+                </button>
+              </div>
             </div>
             {status === "fallback" && dataError && (
               <div className="campus-data-error">

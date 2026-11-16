@@ -265,6 +265,29 @@ export function boxFeature(
     geometry: { type: "Polygon", coordinates: [ring] },
   };
 }
+function roundFeature(
+  hub: Hub,
+  x: number,
+  y: number,
+  radius: number,
+  base: number,
+  height: number,
+  color: string,
+  part: string,
+): Feature<Polygon> {
+  const ring = Array.from({ length: 13 }, (_, i) =>
+    offsetPoint(
+      hub.coordinates,
+      x + Math.cos((i * Math.PI) / 6) * radius,
+      y + Math.sin((i * Math.PI) / 6) * radius,
+    ),
+  );
+  return {
+    type: "Feature",
+    properties: { hubId: hub.id, base, height, color, part },
+    geometry: { type: "Polygon", coordinates: [ring] },
+  };
+}
 export function containerModels(): FeatureCollection<Polygon> {
   const features: Feature<Polygon>[] = [];
   for (const hub of HUBS) {
@@ -361,25 +384,109 @@ export function containerModels(): FeatureCollection<Polygon> {
           "pergola",
         ),
       );
-    for (const [x, y] of [
-      [-8, -6],
-      [12, -6],
-      [-8, 7],
-      [12, 7],
-    ]) {
-      features.push(boxFeature(hub, x, y, 0.5, 0.5, 0, 2.4, "#a38e68", "tree"));
+    // Stairs, terrace rails, deck boards and courtyard furniture.
+    for (let step = 0; step < 14; step++)
       features.push(
         boxFeature(
           hub,
-          x - 1.2,
-          y - 1.2,
-          2.9,
-          2.9,
-          2.4,
-          3.4,
-          "#6f8d63",
-          "tree",
+          7 + step * 0.28,
+          -3,
+          0.28,
+          1.2,
+          0.25,
+          0.42 + step * 0.2,
+          "#d9d3be",
+          "stairs",
         ),
+      );
+    features.push(
+      boxFeature(hub, -6, -4.25, 12.2, 0.06, 3.2, 4.15, "#afbfaa", "rail"),
+    );
+    for (let post = 0; post < 15; post++)
+      features.push(
+        boxFeature(
+          hub,
+          -6 + post * 0.85,
+          -4.3,
+          0.045,
+          0.08,
+          3.2,
+          4.25,
+          "#385b46",
+          "rail",
+        ),
+      );
+    for (let board = 0; board < 28; board++)
+      features.push(
+        boxFeature(
+          hub,
+          -8.8 + board * 0.8,
+          -6.9,
+          0.04,
+          16.8,
+          0.25,
+          0.28,
+          "#b9a482",
+          "deck-board",
+        ),
+      );
+    for (const x of [-3.5, 3]) {
+      features.push(
+        boxFeature(hub, x, -0.6, 2.4, 0.85, 0.25, 1.0, "#b59b74", "table"),
+      );
+      features.push(
+        boxFeature(hub, x, -1.9, 2.4, 0.45, 0.25, 0.7, "#7c946b", "bench"),
+      );
+    }
+    for (const [x, y] of [
+      [-8.5, -6],
+      [12, -6],
+      [-8.5, 7],
+      [12, 7],
+    ]) {
+      features.push(
+        roundFeature(hub, x, y, 1.25, 0.05, 0.3, "#d9d0b8", "planter"),
+      );
+      features.push(roundFeature(hub, x, y, 0.19, 0.3, 4.7, "#a38e68", "tree"));
+      features.push(roundFeature(hub, x, y, 1.4, 4.5, 4.8, "#638655", "tree"));
+      for (let leaf = 0; leaf < 8; leaf++) {
+        const angle = (leaf * Math.PI) / 4;
+        const ring = [
+          [x, y],
+          [
+            x + Math.cos(angle - 0.22) * 2.25,
+            y + Math.sin(angle - 0.22) * 2.25,
+          ],
+          [x + Math.cos(angle) * 2.9, y + Math.sin(angle) * 2.9],
+          [
+            x + Math.cos(angle + 0.22) * 2.25,
+            y + Math.sin(angle + 0.22) * 2.25,
+          ],
+          [x, y],
+        ].map(([a, b]) => offsetPoint(hub.coordinates, a, b));
+        features.push({
+          type: "Feature",
+          properties: {
+            hubId: hub.id,
+            base: 4.4,
+            height: 4.65,
+            color: leaf % 2 ? "#648655" : "#80996b",
+            part: "palm-frond",
+          },
+          geometry: { type: "Polygon", coordinates: [ring] },
+        });
+      }
+    }
+    for (const [x, y] of [
+      [-8, -2],
+      [-8, 4],
+      [11, 3],
+    ]) {
+      features.push(
+        boxFeature(hub, x, y, 1.4, 1.4, 0.25, 0.9, "#b89877", "planter"),
+      );
+      features.push(
+        roundFeature(hub, x + 0.7, y + 0.7, 0.7, 0.9, 1.6, "#6e8b5c", "plant"),
       );
     }
   }

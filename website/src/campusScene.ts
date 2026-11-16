@@ -7,8 +7,62 @@ import type {
 import type { FeatureCollection } from "geojson";
 import { HUBS, containerModels } from "./campus";
 
+function buildingShadows(geometry: FeatureCollection): FeatureCollection {
+  return {
+    type: "FeatureCollection",
+    features: geometry.features
+      .filter(
+        (f) =>
+          f.geometry.type === "Polygon" && f.properties?.kind === "building",
+      )
+      .map((f) => {
+        if (f.geometry.type !== "Polygon") return f;
+        const height = Number(f.properties?.height || 6.6);
+        const points = f.geometry.coordinates[0]
+          .flatMap((p) => [
+            p,
+            [p[0] + height * 0.000005, p[1] - height * 0.000004],
+          ])
+          .sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+        const cross = (a: number[], b: number[], c: number[]) =>
+          (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
+        const lower: number[][] = [],
+          upper: number[][] = [];
+        for (const p of points) {
+          while (
+            lower.length >= 2 &&
+            cross(lower[lower.length - 2], lower[lower.length - 1], p) <= 0
+          )
+            lower.pop();
+          lower.push(p);
+        }
+        for (const p of [...points].reverse()) {
+          while (
+            upper.length >= 2 &&
+            cross(upper[upper.length - 2], upper[upper.length - 1], p) <= 0
+          )
+            upper.pop();
+          upper.push(p);
+        }
+        const hull = [...lower.slice(0, -1), ...upper.slice(0, -1)];
+        if (hull.length) hull.push(hull[0]);
+        return {
+          type: "Feature" as const,
+          properties: {},
+          geometry: { type: "Polygon" as const, coordinates: [hull] },
+        };
+      }),
+  };
+}
+
 export const campusBaseStyle: StyleSpecification = {
   version: 8,
+  light: {
+    anchor: "map",
+    position: [1.5, 220, 40],
+    color: "#fff1d5",
+    intensity: 0.55,
+  },
   sources: {
     streets: {
       type: "raster",
@@ -129,6 +183,20 @@ export function addCampusLayers(
     filter: [...building],
     paint: { "fill-color": "#d2c6ae", "fill-outline-color": "#bbb39c" },
   });
+  map.addSource("campus-shadows", {
+    type: "geojson",
+    data: buildingShadows(geometry),
+  });
+  map.addLayer({
+    id: "building-shadows",
+    type: "fill",
+    source: "campus-shadows",
+    paint: {
+      "fill-color": "#617456",
+      "fill-opacity": 0.13,
+      "fill-translate": [1, 2],
+    },
+  });
   map.addLayer({
     id: "buildings-3d",
     type: "fill-extrusion",
@@ -137,7 +205,8 @@ export function addCampusLayers(
     paint: {
       "fill-extrusion-color": "#dfd6c1",
       "fill-extrusion-height": ["get", "height"],
-      "fill-extrusion-opacity": 0.88,
+      "fill-extrusion-opacity": 1,
+      "fill-extrusion-vertical-gradient": true,
     },
   });
   map.addSource("containers", {

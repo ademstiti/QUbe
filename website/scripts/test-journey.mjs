@@ -157,6 +157,12 @@ try {
   });
   await action(() => {
     const duration = document.querySelector('select[aria-label="Duration"]');
+    const start = document.querySelector('select[aria-label="Start time"]');
+    start.value = "10:00";
+    start.dispatchEvent(new window.Event("change", { bubbles: true }));
+  });
+  await action(() => {
+    const duration = document.querySelector('select[aria-label="Duration"]');
     duration.value = "120";
     duration.dispatchEvent(new window.Event("change", { bubbles: true }));
   });
