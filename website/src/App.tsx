@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from "react";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -62,6 +69,7 @@ import {
 } from "./booking";
 
 const icons = { rest: Moon, focus: BookOpen, group: Users, shower: Droplets };
+const CampusMap = lazy(() => import("./CampusMap"));
 const categoryNo = { rest: "01", focus: "02", group: "03", shower: "04" };
 const selectionFor = (space: Space, selection: Selection): Selection => ({
   ...selection,
@@ -166,6 +174,13 @@ function Navbar({ route, count }: { route: string; count: number }) {
             Explore Spaces
           </a>
           <a
+            href="#/campus"
+            className={route === "campus" ? "active" : ""}
+            aria-current={route === "campus" ? "page" : undefined}
+          >
+            Campus Map <span className="nav-3d">3D</span>
+          </a>
+          <a
             href="#/bookings"
             className={route === "bookings" ? "active" : ""}
             aria-current={route === "bookings" ? "page" : undefined}
@@ -204,6 +219,9 @@ function Footer() {
           <p>Your space between classes.</p>
         </div>
         <div className="footer-links">
+          <a href="#/campus">
+            3D Campus Map <ArrowUpRight size={14} />
+          </a>
           <a href="#/spaces">
             Explore Spaces <ArrowUpRight size={14} />
           </a>
@@ -744,21 +762,33 @@ function Home({
             More of your day.
           </h2>
           <p>
-            A proposed spot near Qatar University Metro Station, designed to fit
-            between your commute, your classes, and everything else.
+            From the metro to your next class, imagine a little more room in
+            your day. Explore proposed QUbe containers near the station and
+            serving every college at Qatar University.
           </p>
           <span className="location-badge">
             <TrainFront size={18} />
             Proposed location · Doha, Qatar
           </span>
+          <ButtonLink href="campus" secondary className="home-campus-link">
+            Explore the 3D Campus Map <ArrowUpRight size={18} />
+          </ButtonLink>
           <p className="small-print">
             Illustrative location only. No site or university affiliation
             confirmed.
           </p>
         </div>
-        <div className="location-map">
+        <a
+          href="#/campus"
+          className="location-map home-campus-preview"
+          aria-label="Explore proposed QUbe locations on the 3D campus map"
+        >
           <LocationArt />
-        </div>
+          <span className="campus-preview-label">
+            <MapPin size={14} />
+            13 proposed stops · Explore in 3D <ArrowUpRight size={16} />
+          </span>
+        </a>
       </section>
       <section className="amenities-section">
         <div className="container amenities-inner">
@@ -1768,10 +1798,12 @@ export default function App() {
           ? "Explore Spaces"
           : route === "bookings"
             ? "My Bookings"
-            : route.startsWith("pass/")
-              ? "Your Demo Pass"
-              : SPACES.find((s) => `spaces/${s.id}` === route)?.name ||
-                "Find Your Space";
+            : route === "campus"
+              ? "3D Campus Map"
+              : route.startsWith("pass/")
+                ? "Your Demo Pass"
+                : SPACES.find((s) => `spaces/${s.id}` === route)?.name ||
+                  "Find Your Space";
     document.title = `QUbe — ${title}`;
     const main = document.getElementById("main-content");
     main?.focus({ preventScroll: true });
@@ -1862,6 +1894,18 @@ export default function App() {
         bookings={bookings}
         onReserve={(space, selection) => setReview({ space, selection })}
       />
+    );
+  else if (route === "campus")
+    content = (
+      <Suspense
+        fallback={
+          <main className="container page-main">
+            <p>Preparing your campus view…</p>
+          </main>
+        }
+      >
+        <CampusMap />
+      </Suspense>
     );
   else if (route === "bookings")
     content = <MyBookings bookings={bookings} onCancel={setCancel} />;

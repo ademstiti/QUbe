@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { Window } from "happy-dom";
 import { createServer } from "vite";
+import { readFileSync } from "node:fs";
+import { validateStyleMin } from "@maplibre/maplibre-gl-style-spec";
 
 // A DOM integration check, without launching or controlling a browser.
 const window = new Window({ url: "http://localhost/#/home" });
@@ -39,6 +41,23 @@ const React = await import("react");
 const { createRoot } = await import("react-dom/client");
 const { default: App } = await server.ssrLoadModule("/src/App.tsx");
 const { STORE_KEY, qatarToday } = await server.ssrLoadModule("/src/booking.ts");
+const { HUBS, containerModels } = await server.ssrLoadModule("/src/campus.ts");
+const { campusBaseStyle, addCampusLayers, createCampusStyle } =
+  await server.ssrLoadModule("/src/campusScene.ts");
+const campusData = JSON.parse(
+  readFileSync(
+    new URL("../public/campus/qatar-university.geojson", import.meta.url),
+    "utf8",
+  ),
+);
+const originalFetch = globalThis.fetch;
+globalThis.fetch = async (url, options) =>
+  typeof url === "string" && url.endsWith("campus/qatar-university.geojson")
+    ? new Response(JSON.stringify(campusData), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      })
+    : originalFetch(url, options);
 const visitDate = qatarToday(new Date(Date.now() + 86400000));
 const rootElement = document.createElement("div");
 document.body.append(rootElement);
@@ -67,6 +86,51 @@ function saved() {
   return JSON.parse(localStorage.getItem(STORE_KEY) || "[]");
 }
 try {
+  const scene = structuredClone(campusBaseStyle);
+  addCampusLayers(
+    {
+      addSource(id, source) {
+        scene.sources[id] = source;
+      },
+      addLayer(layer) {
+        scene.layers.push(layer);
+      },
+    },
+    campusData,
+  );
+  assert.deepEqual(
+    validateStyleMin(scene).map((error) => error.message),
+    [],
+    "The 3D map style must pass MapLibre's schema and expression validation",
+  );
+  const initialScene = createCampusStyle(campusData);
+  assert.deepEqual(
+    initialScene,
+    scene,
+    "The initial map style must already contain campus sources and 3D layers before its load event",
+  );
+  assert.equal(HUBS.length, 13);
+  assert.equal(HUBS.filter((h) => h.id !== "metro").length, 12);
+  assert.equal(new Set(HUBS.map((h) => h.college)).size, 13);
+  assert.ok(campusData.features.length > 1000);
+  const models = containerModels();
+  for (const hub of HUBS) {
+    const parts = models.features.filter((f) => f.properties.hubId === hub.id);
+    assert.equal(
+      parts.filter((f) => f.properties.part === "container").length,
+      3,
+    );
+    for (const part of parts) {
+      assert.ok(part.properties.height > part.properties.base);
+      assert.deepEqual(
+        part.geometry.coordinates[0][0],
+        part.geometry.coordinates[0].at(-1),
+      );
+    }
+  }
+  console.log(
+    "✓ Campus scene validates with real map geometry, all 12 colleges, metro, and 13 complete 3D container clusters",
+  );
   await action(() => root.render(React.createElement(App)));
   assert.match(text(), /Make the most/);
   assert.equal(document.querySelectorAll(".need-tile").length, 4);
@@ -180,6 +244,60 @@ try {
   console.log(
     "✓ All four space types complete reservations with correct prices",
   );
+  const savedBeforeMap = localStorage.getItem(STORE_KEY);
+  await route("campus");
+  for (
+    let attempt = 0;
+    attempt < 40 && !document.querySelector(".campus-hub");
+    attempt++
+  )
+    await action(() => {});
+  assert.equal(document.querySelectorAll(".campus-hub").length, 13);
+  assert.match(
+    document.querySelector(".campus-proposal-note").textContent,
+    /illustrative proposals/,
+  );
+  assert.match(
+    document.querySelector(".fallback-notice").textContent,
+    /2D campus view/,
+  );
+  await action(() =>
+    [...document.querySelectorAll(".campus-hub")]
+      .find((b) => b.textContent.includes("College of Engineering"))
+      .click(),
+  );
+  assert.match(
+    document.querySelector(".campus-selected").textContent,
+    /The Ideas Yard/,
+  );
+  assert.ok(
+    document
+      .querySelector('.campus-selected a[target="_blank"]')
+      .href.includes("25.379"),
+  );
+  await action(() =>
+    [...document.querySelectorAll(".campus-filter button")]
+      .find((b) => b.textContent === "Health")
+      .click(),
+  );
+  assert.equal(document.querySelectorAll(".campus-hub").length, 5);
+  await action(() => button("About this map").click());
+  assert.ok(document.querySelector('.campus-sources a[href*="openstreetmap"]'));
+  await action(() => {
+    const search = document.querySelector(".campus-search input");
+    Object.getOwnPropertyDescriptor(
+      window.HTMLInputElement.prototype,
+      "value",
+    ).set.call(search, "no-college-matches-this");
+    search.dispatchEvent(new window.Event("input", { bubbles: true }));
+  });
+  assert.ok(document.querySelector(".campus-no-results"));
+  await action(() => button("Show all stops").click());
+  assert.equal(document.querySelectorAll(".campus-hub").length, 13);
+  assert.equal(localStorage.getItem(STORE_KEY), savedBeforeMap);
+  console.log(
+    "✓ Campus navigation, selection, filters, search empty state, sources, Google Maps link, and 2D fallback work without changing bookings",
+  );
   assert.deepEqual(errors, [], "No React errors should be logged");
   console.log("Journey passed without React errors.");
 } finally {
@@ -187,4 +305,5 @@ try {
   await server.close();
   await window.happyDOM.close();
   console.error = originalError;
+  globalThis.fetch = originalFetch;
 }

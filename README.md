@@ -27,6 +27,8 @@ All booking times use Qatar time. Sample hours are 08:00–22:00. Rest/Focus/Gro
 
 Live prototype: **https://qube-student-hub.vercel.app**
 
+3D campus concept: **https://qube-student-hub.vercel.app/#/campus**. Explore 13 proposed container hubs serving the metro and all 12 QU colleges. Select a numbered hub or use search and category filters; switch between 3D and 2D, rotate, zoom, inspect the container models, or open the nearby reference landmark in Google Maps. The default map uses a bundled OpenStreetMap snapshot; the optional street overlay needs internet access. Browsers without WebGL get an accessible 2D campus fallback. Landmarks, approximate college areas, and proposed container footprints are labelled separately. These future stops do not add locations or inventory to the existing booking demo.
+
 Import the repository in Vercel and set **Root Directory** to `website`. The Vite build and `website/vercel.json` provide the deployment configuration. Alternatively, run `vercel --prod` from `website` with an authenticated Vercel CLI.
 
 Validation covers 14 booking-rule tests plus an automated DOM journey through filtering, duration and capacity controls, reservation, saved-booking reload, pass reopening, cancellation, and all four space types. The production build passes. Visual browser inspection was unavailable because Computer Use access was not approved.

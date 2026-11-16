@@ -1,5 +1,64 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Manrope:wght@400;500;600;650;700;750;800&display=swap");
 
+.nav-3d {
+  font-size: 7px;
+  letter-spacing: 0.5px;
+  color: #6e8c5c;
+  border: 1px solid #d6e0cd;
+  border-radius: 3px;
+  padding: 2px 4px;
+  line-height: 1;
+}
+.home-campus-link {
+  display: flex;
+  width: fit-content;
+  font-size: 11px;
+  gap: 19px;
+  min-height: 47px;
+  margin-top: 7px;
+  margin-bottom: 17px;
+}
+.home-campus-preview {
+  position: relative;
+  display: block;
+}
+.campus-preview-label {
+  position: absolute;
+  bottom: 18px;
+  left: 17px;
+  right: 17px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fbfcfaeb;
+  border: 1px solid #fff;
+  border-radius: 6px;
+  padding: 12px 13px;
+  font-size: 10px;
+  color: var(--green);
+  box-shadow: 0 4px 14px #29442610;
+}
+.campus-preview-label > svg:last-child {
+  margin-left: auto;
+}
+@media (max-width: 740px) {
+  .home-campus-link {
+    font-size: 11px;
+    min-height: 48px;
+    margin-top: 7px;
+  }
+  .campus-preview-label {
+    font-size: 9px;
+    padding: 11px;
+    left: 13px;
+    right: 13px;
+    bottom: 13px;
+  }
+  .nav-3d {
+    font-size: 9px;
+    padding: 3px 5px;
+  }
+}
 :root {
   font-family: "DM Sans", "Avenir Next", sans-serif;
   color: #1e2a25;
