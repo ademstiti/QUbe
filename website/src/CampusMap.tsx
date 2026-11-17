@@ -213,7 +213,7 @@ export default function CampusMap() {
       const hub = HUBS.find((h) => h.id === id)!;
       mapRef.current?.easeTo({
         center: hub.coordinates,
-        zoom: 18.7,
+        zoom: 20.3,
         pitch: state.current.view === "3d" ? 58 : 0,
         ...mapMotion(),
       });
@@ -259,8 +259,8 @@ export default function CampusMap() {
           // can fire `load` before any campus geometry has reached the worker.
           style: createCampusStyle(geometry),
           pixelRatio: Math.min(window.devicePixelRatio || 1, 2),
-          center: CAMPUS_CENTER,
-          zoom: 15.65,
+          center: HUBS[0].coordinates,
+          zoom: 19.8,
           pitch: 50,
           bearing: -24,
           maxPitch: 72,
@@ -389,7 +389,7 @@ export default function CampusMap() {
     if (cameraInitialized.current)
       map.easeTo({
         center: active.coordinates,
-        zoom: 18.7,
+        zoom: 20.3,
         pitch: view === "3d" ? 58 : 0,
         bearing: view === "3d" ? -24 : 0,
         ...mapMotion(),
@@ -460,12 +460,10 @@ export default function CampusMap() {
   function inspect() {
     setTour(false);
     setStudioOpen(true);
-    document
-      .querySelector(".campus-map-stage")
-      ?.scrollIntoView({
-        behavior: reducedMotion() ? "instant" : "smooth",
-        block: "center",
-      });
+    document.querySelector(".campus-map-stage")?.scrollIntoView({
+      behavior: reducedMotion() ? "instant" : "smooth",
+      block: "center",
+    });
   }
   function next() {
     const index = filtered.findIndex((h) => h.id === selected);

@@ -3,7 +3,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { buildHubArchitecture } from "./hubArchitecture";
 
-export type StudioPreset = "perspective" | "front" | "top";
+export type StudioPreset = "perspective" | "front" | "top" | "site";
 export type StudioController = {
   setEvening: (value: boolean) => void;
   setCutaway: (value: boolean) => void;
@@ -41,12 +41,12 @@ export function startHubStudio(
   scene.background = new THREE.Color("#ececdf");
   scene.fog = new THREE.Fog("#ececdf", 65, 125);
   const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 180);
-  camera.position.set(27, 20, 30);
+  camera.position.set(18, 12, 20);
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(0, 2, 0);
+  controls.target.set(-1, 2.7, -0.4);
   controls.enableDamping = true;
   controls.dampingFactor = 0.07;
-  controls.minDistance = 13;
+  controls.minDistance = 9;
   controls.maxDistance = 65;
   controls.maxPolarAngle = Math.PI * 0.485;
   controls.minPolarAngle = 0.06;
@@ -196,7 +196,10 @@ export function startHubStudio(
   controls.addEventListener("start", handleStart);
   const lost = (e: Event) => {
     e.preventDefault();
-    if (!disposed) { renderer.setAnimationLoop(null); onError(); }
+    if (!disposed) {
+      renderer.setAnimationLoop(null);
+      onError();
+    }
   };
   renderer.domElement.addEventListener("webglcontextlost", lost);
   let first = true,
@@ -255,17 +258,26 @@ export function startHubStudio(
     preset(value) {
       const p =
         value === "front"
-          ? new THREE.Vector3(1, 8, 36)
+          ? new THREE.Vector3(0, 6.8, 25)
           : value === "top"
-            ? new THREE.Vector3(0.1, 44, 0.1)
-            : new THREE.Vector3(27, 20, 30);
-      move(p, new THREE.Vector3(0, value === "top" ? 0 : 2, 0));
+            ? new THREE.Vector3(0.1, 31, 0.1)
+            : value === "site"
+              ? new THREE.Vector3(27, 20, 30)
+              : new THREE.Vector3(18, 12, 20);
+      move(
+        p,
+        new THREE.Vector3(
+          value === "site" ? 0 : -1,
+          value === "top" ? 0 : 2.7,
+          -0.4,
+        ),
+      );
     },
     zoom(factor) {
       const direction = camera.position.clone().sub(controls.target);
       const distance = THREE.MathUtils.clamp(
         direction.length() * factor,
-        13,
+        9,
         65,
       );
       move(

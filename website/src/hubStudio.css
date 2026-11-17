@@ -504,3 +504,288 @@
 .hub-studio:fullscreen .studio-title h2 {
   font-size: clamp(33px, 4vw, 60px);
 }
+
+/* The architectural model has its own viewport, outside the embedded map. */
+.hub-studio {
+  position: fixed;
+  inset: 12px;
+  width: calc(100vw - 24px);
+  height: calc(100dvh - 24px);
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #bccbb5;
+  border-radius: 14px;
+  z-index: 100;
+  box-sizing: border-box;
+}
+.hub-studio::backdrop {
+  background: #132e25b8;
+  backdrop-filter: blur(5px);
+}
+.hub-studio .studio-top {
+  top: 24px;
+  left: 28px;
+  right: 28px;
+}
+.hub-studio .studio-top button {
+  font-size: 15px;
+  min-height: 48px;
+  padding: 12px 18px;
+  gap: 10px;
+}
+.hub-studio .studio-top .studio-close {
+  width: 48px;
+  height: 48px;
+  padding: 12px;
+}
+.hub-studio .studio-mode-label {
+  display: flex;
+  font-size: 12px;
+  letter-spacing: 1.2px;
+}
+.hub-studio .studio-title {
+  top: 110px;
+  left: 36px;
+  max-width: 400px;
+}
+.hub-studio .studio-title > span {
+  font-size: 12px;
+  line-height: 1.7;
+  letter-spacing: 1px;
+}
+.hub-studio .studio-title h2 {
+  font-size: 46px;
+  line-height: 1.15;
+  margin: 14px 0 16px;
+}
+.hub-studio .studio-title p {
+  font-size: 16px;
+  max-width: 340px;
+  line-height: 1.7;
+}
+.hub-studio .studio-environment {
+  top: 110px;
+  right: 28px;
+  left: auto;
+  padding: 5px;
+}
+.hub-studio .studio-environment button {
+  font-size: 14px;
+  min-height: 46px;
+  padding: 12px 17px;
+  gap: 8px;
+}
+.hub-studio .studio-tools {
+  top: 190px;
+  right: 28px;
+  padding: 5px;
+}
+.hub-studio .studio-tools button {
+  width: 46px;
+  height: 48px;
+}
+.hub-studio .studio-bottom {
+  left: 25px;
+  right: 25px;
+  bottom: 72px;
+}
+.hub-studio .studio-camera-bar {
+  max-width: none;
+  width: auto;
+  flex-wrap: nowrap;
+  gap: 7px;
+  padding: 8px 10px;
+  border-radius: 11px;
+}
+.hub-studio .studio-camera-bar > div {
+  width: auto;
+  border: 0;
+  padding: 0;
+  gap: 3px;
+}
+.hub-studio .studio-camera-bar > span {
+  display: block;
+}
+.hub-studio .studio-camera-bar button {
+  font-size: 14px;
+  min-height: 46px;
+  padding: 12px 16px;
+  gap: 8px;
+}
+.hub-studio .studio-gesture {
+  font-size: 13px;
+  margin-top: 12px;
+  padding: 5px 10px;
+}
+.hub-studio .studio-footnote {
+  bottom: 20px;
+  left: 28px;
+  right: 28px;
+  font-size: 12px;
+  display: flex;
+  align-items: end;
+  gap: 20px;
+}
+.hub-studio .studio-footnote > span:last-child {
+  font-size: 11px;
+  max-width: 320px;
+}
+.hub-studio .hub-studio-placeholder > span {
+  font-size: 15px;
+  max-width: 420px;
+  bottom: 160px;
+}
+@media (max-width: 950px) {
+  .hub-studio .studio-mode-label {
+    display: none;
+  }
+  .hub-studio .studio-title h2 {
+    font-size: 36px;
+  }
+  .hub-studio .studio-title {
+    max-width: 310px;
+  }
+  .hub-studio .studio-title > span {
+    font-size: 11px;
+  }
+  .hub-studio .studio-title p {
+    font-size: 14px;
+    max-width: 290px;
+  }
+  .hub-studio .studio-camera-bar {
+    flex-wrap: wrap;
+    max-width: 620px;
+    justify-content: center;
+  }
+  .hub-studio .studio-camera-bar > div {
+    width: 100%;
+    justify-content: center;
+    border-bottom: 1px solid #dce5d2;
+    padding-bottom: 5px;
+  }
+  .hub-studio .studio-camera-bar > span {
+    display: none;
+  }
+  .hub-studio .studio-camera-bar button {
+    font-size: 14px;
+  }
+  .hub-studio .studio-footnote {
+    font-size: 11px;
+    display: block;
+  }
+  .hub-studio .studio-footnote > span {
+    display: block;
+    text-align: center;
+  }
+  .hub-studio .studio-footnote > span:last-child {
+    font-size: 10px;
+    max-width: none;
+    text-align: center;
+    margin-top: 3px;
+  }
+}
+@media (max-width: 600px) {
+  .hub-studio {
+    inset: 0;
+    width: 100vw;
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+  }
+  .hub-studio .studio-top {
+    top: max(14px, env(safe-area-inset-top));
+    left: 15px;
+    right: 15px;
+    gap: 12px;
+  }
+  .hub-studio .studio-top button {
+    font-size: 14px;
+    min-height: 48px;
+    padding: 12px 14px;
+  }
+  .hub-studio .studio-top .studio-close {
+    width: 46px;
+  }
+  .hub-studio .studio-title {
+    top: 85px;
+    left: 20px;
+    right: 20px;
+    max-width: none;
+  }
+  .hub-studio .studio-title h2 {
+    display: none;
+  }
+  .hub-studio .studio-title > span {
+    font-size: 11px;
+    letter-spacing: 0.6px;
+    max-width: 100%;
+    display: block;
+  }
+  .hub-studio .studio-title p {
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 100%;
+    margin-top: 8px;
+  }
+  .hub-studio .studio-environment {
+    top: 160px;
+    left: 19px;
+    right: auto;
+  }
+  .hub-studio .studio-environment button {
+    font-size: 13px;
+    min-height: 44px;
+    padding: 11px 14px;
+  }
+  .hub-studio .studio-tools {
+    top: 160px;
+    right: 15px;
+    padding: 3px;
+  }
+  .hub-studio .studio-tools button {
+    width: 39px;
+    height: 43px;
+  }
+  .hub-studio .studio-bottom {
+    left: 12px;
+    right: 12px;
+    bottom: max(77px, calc(env(safe-area-inset-bottom) + 65px));
+  }
+  .hub-studio .studio-camera-bar {
+    padding: 6px;
+    width: 100%;
+    max-width: 460px;
+    gap: 3px;
+  }
+  .hub-studio .studio-camera-bar > div {
+    gap: 0;
+  }
+  .hub-studio .studio-camera-bar button {
+    font-size: 13px;
+    min-height: 44px;
+    padding: 11px 10px;
+  }
+  .hub-studio .studio-gesture {
+    font-size: 11px;
+    text-align: center;
+    line-height: 1.7;
+    max-width: 340px;
+    margin-top: 7px;
+  }
+  .hub-studio .studio-footnote {
+    bottom: max(17px, env(safe-area-inset-bottom));
+    left: 15px;
+    right: 15px;
+    font-size: 10px;
+  }
+  .hub-studio .studio-footnote > span:last-child {
+    font-size: 10px;
+    margin-top: 4px;
+  }
+  .hub-studio .hub-studio-placeholder > span {
+    max-width: 280px;
+    font-size: 14px;
+  }
+}

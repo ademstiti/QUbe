@@ -29,7 +29,7 @@ export default function HubStudio({
   onClose: () => void;
 }) {
   const host = useRef<HTMLDivElement>(null),
-    shell = useRef<HTMLDivElement>(null),
+    shell = useRef<HTMLDialogElement>(null),
     controller = useRef<StudioController | null>(null);
   const [ready, setReady] = useState(false),
     [failed, setFailed] = useState(false),
@@ -37,6 +37,18 @@ export default function HubStudio({
     [cutaway, setCutaway] = useState(false),
     [orbit, setOrbit] = useState(false),
     [preset, setPreset] = useState<StudioPreset>("perspective");
+  useEffect(() => {
+    const dialog = shell.current!;
+    const previous = document.activeElement as HTMLElement | null;
+    const overflow = document.body.style.overflow;
+    dialog.showModal();
+    document.body.style.overflow = "hidden";
+    return () => {
+      dialog.close();
+      document.body.style.overflow = overflow;
+      previous?.focus();
+    };
+  }, []);
   useEffect(() => {
     let disposed = false;
     let timer: ReturnType<typeof setTimeout> | undefined;
@@ -92,7 +104,15 @@ export default function HubStudio({
     controller.current?.preset(value);
   }
   return (
-    <div ref={shell} className={`hub-studio ${evening ? "is-evening" : ""}`}>
+    <dialog
+      ref={shell}
+      className={`hub-studio ${evening ? "is-evening" : ""}`}
+      aria-label="QUbe architecture studio"
+      onCancel={(event) => {
+        event.preventDefault();
+        onClose();
+      }}
+    >
       <div ref={host} className="hub-studio-host" />
       {!ready && (
         <div className="hub-studio-placeholder">
@@ -120,7 +140,10 @@ export default function HubStudio({
               aria-label="Toggle fullscreen architecture view"
               onClick={() => {
                 if (document.fullscreenElement) void document.exitFullscreen();
-                else void shell.current?.requestFullscreen().catch(() => {});
+                else
+                  void document.documentElement
+                    .requestFullscreen()
+                    .catch(() => {});
               }}
             >
               <Maximize size={17} />
@@ -198,21 +221,25 @@ export default function HubStudio({
       <div className="studio-bottom">
         <div className="studio-camera-bar">
           <div role="group" aria-label="Architecture camera angle">
-            {(["perspective", "front", "top"] as StudioPreset[]).map((view) => (
-              <button
-                disabled={!ready}
-                aria-pressed={preset === view}
-                className={preset === view ? "selected" : ""}
-                key={view}
-                onClick={() => camera(view)}
-              >
-                {view === "perspective"
-                  ? "Perspective"
-                  : view === "front"
-                    ? "Front view"
-                    : "Top view"}
-              </button>
-            ))}
+            {(["perspective", "front", "top", "site"] as StudioPreset[]).map(
+              (view) => (
+                <button
+                  disabled={!ready}
+                  aria-pressed={preset === view}
+                  className={preset === view ? "selected" : ""}
+                  key={view}
+                  onClick={() => camera(view)}
+                >
+                  {view === "perspective"
+                    ? "Perspective"
+                    : view === "front"
+                      ? "Front view"
+                      : view === "top"
+                        ? "Top view"
+                        : "Full site"}
+                </button>
+              ),
+            )}
           </div>
           <span />
           <button
@@ -245,6 +272,6 @@ export default function HubStudio({
           confirmed.
         </span>
       </div>
-    </div>
+    </dialog>
   );
 }

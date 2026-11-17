@@ -145,6 +145,11 @@ try {
   for (let i = 0; i < 40 && button("Evening").disabled; i++)
     await action(() => {});
   assert.equal(button("Evening").disabled, false);
+  assert.ok(
+    element.querySelector("dialog.hub-studio[open]"),
+    "Architecture should open in its own screen-filling modal",
+  );
+  assert.equal(document.body.style.overflow, "hidden");
   await action(() => button("Evening").click());
   assert.ok(calls.some(([key, v]) => key === "evening" && v === true));
   await action(() => button("Open roof").click());
@@ -156,12 +161,15 @@ try {
   assert.ok(calls.some(([key, v]) => key === "preset" && v === "front"));
   await action(() => button("Top view").click());
   assert.ok(calls.some(([key, v]) => key === "preset" && v === "top"));
+  await action(() => button("Full site").click());
+  assert.ok(calls.some(([key, v]) => key === "preset" && v === "site"));
   await action(() => button("Zoom in on the architecture").click());
   assert.ok(calls.some(([key, v]) => key === "zoom" && v < 1));
   await action(() => button("Back to campus").click());
   assert.equal(closed, true);
   await action(() => root.unmount());
   assert.equal(disposed, true);
+  assert.notEqual(document.body.style.overflow, "hidden");
   console.log(
     "✓ Studio lighting, cutaway, orbit, camera angles, zoom, close, and GPU cleanup controls are wired correctly",
   );

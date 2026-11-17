@@ -1694,3 +1694,358 @@
     transition: none;
   }
 }
+
+/* Campus presentation at a readable scale. */
+:root .campus-page {
+  max-width: 1660px;
+  width: calc(100% - 48px);
+}
+:root .campus-shell {
+  grid-template-columns: 340px minmax(0, 1fr);
+}
+:root .campus-map-stage {
+  height: clamp(680px, 78vh, 960px);
+}
+:root .campus-sidebar {
+  max-height: calc(clamp(680px, 78vh, 960px) + 58px);
+}
+:root .campus-heading > div > p:not(.eyebrow) {
+  font-size: 17px;
+  max-width: 700px;
+}
+:root .campus-heading .eyebrow {
+  font-size: 12px;
+}
+:root .campus-stat span {
+  font-size: 14px;
+}
+:root .campus-proposal-note p {
+  font-size: 14px;
+}
+:root .campus-sidebar-top {
+  padding: 24px 20px 19px;
+}
+:root .campus-list-title {
+  font-size: 16px;
+}
+:root .campus-search {
+  height: 50px;
+  margin-top: 20px;
+}
+:root .campus-search input {
+  font-size: 16px;
+}
+:root .campus-filter {
+  gap: 5px;
+}
+:root .campus-filter button {
+  font-size: 13px;
+  min-height: 44px;
+  padding: 11px 13px;
+}
+:root .campus-result-count {
+  font-size: 12px;
+}
+:root .campus-hub {
+  min-height: 88px;
+  padding: 17px 12px;
+  gap: 13px;
+}
+:root .hub-number {
+  width: 35px;
+  height: 38px;
+  font-size: 13px;
+}
+:root .campus-hub strong {
+  font-size: 14px;
+  line-height: 1.6;
+}
+:root .campus-hub small {
+  font-size: 12px;
+  line-height: 1.7;
+}
+:root .campus-map-badge {
+  font-size: 10px;
+  letter-spacing: 0.7px;
+  padding: 12px 14px;
+}
+:root .campus-view-toggle button {
+  font-size: 14px;
+  min-height: 46px;
+  min-width: 50px;
+  padding: 12px;
+}
+:root .campus-map-tools {
+  top: 87px;
+}
+:root .campus-map-tools button {
+  width: 42px;
+  height: 46px;
+}
+:root .street-toggle {
+  font-size: 14px;
+  min-height: 46px;
+  padding: 12px 16px;
+}
+:root .campus-drag-hint {
+  font-size: 12px;
+}
+:root .campus-legend {
+  min-height: 58px;
+  gap: 18px;
+  padding: 13px 20px;
+  flex-wrap: wrap;
+}
+:root .campus-legend > span,
+:root .campus-legend > button {
+  font-size: 12px;
+}
+:root .campus-legend > button {
+  min-height: 30px;
+}
+:root .pin-number {
+  font-size: 12px;
+  min-width: 34px;
+  height: 31px;
+}
+:root .pin-label {
+  font-size: 12px;
+  max-width: 195px;
+  padding: 7px 10px;
+}
+:root .hub-pin.is-selected .pin-number {
+  min-width: 37px;
+  height: 34px;
+}
+:root .campus-experience-bar {
+  left: 20px;
+  right: 85px;
+  bottom: 106px;
+  gap: 15px;
+}
+:root .campus-studio-launch {
+  min-height: 64px;
+  padding: 15px 17px;
+  gap: 12px;
+}
+:root .campus-studio-launch > span {
+  font-size: 14px;
+}
+:root .campus-studio-launch small {
+  font-size: 12px;
+}
+:root .campus-experience-controls button {
+  font-size: 12px;
+  min-height: 44px;
+  padding: 12px;
+}
+:root .campus-experience-controls button > span {
+  display: inline;
+}
+:root .campus-proposed-tag {
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+:root .selected-hub-main h2 {
+  font-size: 32px;
+}
+:root .campus-selected .selected-college {
+  font-size: 15px;
+}
+:root .selected-hub-main > div > p:last-child {
+  font-size: 16px;
+}
+:root .selected-hub-actions > .button {
+  font-size: 14px;
+  min-height: 52px;
+}
+:root .selected-hub-actions a {
+  font-size: 13px;
+  min-height: 42px;
+}
+:root .selected-hub-actions > div > button {
+  font-size: 14px;
+  min-height: 44px;
+}
+:root .selected-hub-note p {
+  font-size: 12px;
+}
+:root .campus-sources > p {
+  font-size: 14px;
+}
+:root .campus-sources a {
+  font-size: 13px;
+}
+:root .campus-sources > p:last-child {
+  font-size: 12px;
+}
+:root .campus-booking-link strong {
+  font-size: 19px;
+}
+:root .campus-booking-link p {
+  font-size: 14px;
+}
+:root .campus-booking-link .button {
+  font-size: 15px;
+}
+:root .fallback-notice {
+  font-size: 13px;
+  bottom: 188px;
+}
+:root .fallback-location-buttons {
+  bottom: 155px;
+}
+:root .fallback-location-buttons button {
+  min-width: 34px;
+  min-height: 34px;
+  font-size: 12px;
+}
+:root .fallback-attribution {
+  font-size: 11px;
+}
+@media (max-width: 1150px) {
+  :root .campus-shell {
+    grid-template-columns: 290px minmax(0, 1fr);
+  }
+  :root .campus-filter button {
+    font-size: 12px;
+    padding: 10px;
+  }
+  :root .campus-map-badge {
+    font-size: 8px;
+    letter-spacing: 0.4px;
+    padding: 12px 9px;
+  }
+  :root .campus-experience-controls button > span {
+    display: none;
+  }
+  :root .campus-experience-controls button {
+    min-width: 40px;
+  }
+  :root .campus-studio-launch > span {
+    font-size: 13px;
+  }
+  :root .campus-studio-launch small {
+    font-size: 11px;
+  }
+}
+@media (max-width: 740px) {
+  :root .campus-page {
+    width: calc(100% - 28px);
+  }
+  :root .campus-shell {
+    display: flex;
+  }
+  :root .campus-map-stage {
+    height: 600px;
+  }
+  :root .campus-sidebar {
+    max-height: none;
+  }
+  :root .campus-heading h1 {
+    font-size: 38px;
+  }
+  :root .campus-heading > div > p:not(.eyebrow) {
+    font-size: 16px;
+  }
+  :root .campus-proposal-note p {
+    font-size: 13px;
+  }
+  :root .campus-list-title {
+    font-size: 16px;
+  }
+  :root .campus-filter button {
+    font-size: 14px;
+    min-height: 46px;
+    flex: 1;
+  }
+  :root .campus-hub {
+    min-width: 280px;
+    width: 280px;
+  }
+  :root .campus-hub strong {
+    font-size: 14px;
+  }
+  :root .campus-hub small {
+    font-size: 12px;
+  }
+  :root .campus-map-badge {
+    font-size: 7px;
+    max-width: calc(100% - 108px);
+    padding: 11px 8px;
+  }
+  :root .campus-map-tools {
+    right: 13px;
+    top: 80px;
+  }
+  :root .campus-map-tools button {
+    width: 39px;
+    height: 44px;
+  }
+  :root .campus-map-top {
+    left: 13px;
+    right: 13px;
+  }
+  :root .campus-map-bottom {
+    left: 13px;
+    bottom: 38px;
+  }
+  :root .campus-experience-bar {
+    left: 13px;
+    right: 70px;
+    bottom: 107px;
+    gap: 7px;
+  }
+  :root .campus-studio-launch {
+    min-height: 57px;
+    padding: 12px;
+    gap: 8px;
+  }
+  :root .campus-studio-launch > span {
+    font-size: 12px;
+  }
+  :root .campus-studio-launch small {
+    font-size: 10px;
+  }
+  :root .campus-experience-controls button {
+    min-width: 33px;
+    min-height: 40px;
+    padding: 8px;
+  }
+  :root .campus-legend {
+    gap: 10px 14px;
+    padding: 13px;
+  }
+  :root .campus-legend > span,
+  :root .campus-legend > button {
+    font-size: 11px;
+  }
+  :root .selected-hub-main h2 {
+    font-size: 28px;
+  }
+  :root .selected-hub-main {
+    gap: 14px;
+  }
+  :root .selected-hub-main > div > p:last-child {
+    font-size: 15px;
+  }
+  :root .campus-proposed-tag {
+    font-size: 10px;
+  }
+  :root .campus-selected {
+    padding: 24px 19px;
+  }
+  :root .campus-selected .selected-college {
+    font-size: 14px;
+  }
+  :root .campus-legend > button {
+    margin-left: 0;
+  }
+  :root .fallback-notice {
+    font-size: 12px;
+    bottom: 196px;
+  }
+  :root .fallback-location-buttons {
+    bottom: 155px;
+  }
+}

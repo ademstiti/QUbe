@@ -1,0 +1,488 @@
+/* Readable product typography and comfortable controls at every viewport. */
+:root .container {
+  max-width: 1440px;
+  width: calc(100% - 64px);
+}
+:root .header-inner {
+  width: calc(100% - 64px);
+  max-width: 1500px;
+}
+:root .site-header .nav-links {
+  font-size: 15px;
+  gap: 28px;
+}
+:root .concept-label {
+  font-size: 13px;
+}
+:root .button {
+  font-size: 15px;
+  min-height: 52px;
+}
+:root .header-book {
+  font-size: 14px;
+  min-height: 46px;
+}
+:root .eyebrow {
+  font-size: 12px;
+  letter-spacing: 1.4px;
+}
+:root .hero-subtitle {
+  font-size: 18px;
+  max-width: 440px;
+}
+:root .hero-actions .button-plain {
+  font-size: 15px;
+}
+:root .hero-location {
+  font-size: 13px;
+  line-height: 1.7;
+}
+:root .quick-book-title strong {
+  font-size: 16px;
+}
+:root .quick-book-title div > span {
+  font-size: 13px;
+}
+:root .quick-book .field input,
+:root .quick-book .field select {
+  font-size: 15px;
+  min-height: 34px;
+}
+:root .quick-book .button {
+  font-size: 15px;
+}
+:root .quick-caption {
+  font-size: 12px;
+  line-height: 1.8;
+}
+:root .field > span:first-child,
+:root .booking-fields .field > span:first-child {
+  font-size: 13px;
+}
+:root .field input,
+:root .field select,
+:root .booking-fields .field input,
+:root .booking-fields .field select,
+:root .modal form > .field input {
+  font-size: 16px;
+  min-height: 48px;
+}
+:root .field small {
+  font-size: 11px;
+}
+:root .section-heading > p {
+  font-size: 15px;
+}
+:root .text-link {
+  font-size: 14px;
+  min-height: 44px;
+}
+:root .need-tile p {
+  font-size: 14px;
+  max-width: calc(100% - 16px);
+}
+:root .need-number {
+  font-size: 12px;
+}
+:root .space-card-body {
+  padding: 23px 20px;
+}
+:root .space-card h3 {
+  font-size: 23px;
+}
+:root .space-card-body > p {
+  font-size: 15px;
+  min-height: 0;
+}
+:root .card-title-row {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+:root .tiny-category {
+  font-size: 13px;
+}
+:root .availability {
+  font-size: 12px;
+}
+:root .card-amenities {
+  font-size: 13px;
+  gap: 14px;
+}
+:root .card-amenities svg {
+  width: 16px;
+}
+:root .card-bottom {
+  flex-wrap: wrap;
+  gap: 9px;
+}
+:root .card-bottom strong {
+  font-size: 20px;
+}
+:root .card-bottom > div > span {
+  font-size: 12px;
+}
+:root .card-bottom .text-link {
+  font-size: 14px;
+  gap: 7px;
+}
+:root .art-tag {
+  font-size: 12px;
+  padding: 8px 11px;
+}
+:root .section-footnote,
+:root .small-print {
+  font-size: 12px;
+}
+:root .how-intro > p:not(.eyebrow),
+:root .step p,
+:root .idea-copy > p:not(.eyebrow):not(.small-print),
+:root .location-copy > p:not(.eyebrow):not(.small-print) {
+  font-size: 16px;
+}
+:root .step h3 {
+  font-size: 19px;
+}
+:root .step-number {
+  font-size: 14px;
+}
+:root .idea-features,
+:root .location-badge {
+  font-size: 14px;
+}
+:root .amenities-inner > div > span,
+:root .footer-links {
+  font-size: 14px;
+}
+:root .footer-links {
+  flex-wrap: wrap;
+  gap: 20px;
+}
+:root .footer-top > div:first-child > p {
+  font-size: 14px;
+}
+:root .footer-bottom,
+:root .amenities-inner > small {
+  font-size: 12px;
+}
+:root .page-heading > p,
+:root .page-heading > div > p:not(.eyebrow) {
+  font-size: 16px;
+}
+:root .filter-chip {
+  font-size: 14px;
+  min-height: 46px;
+  padding: 12px 17px;
+}
+:root .filter-tabs {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+:root .checkbox-label,
+:root .demo-note,
+:root .result-count {
+  font-size: 13px;
+}
+:root .demo-note small,
+:root .result-count > span:last-child {
+  font-size: 12px;
+}
+:root .explore-help strong {
+  font-size: 16px;
+}
+:root .explore-help p {
+  font-size: 14px;
+}
+:root .back-link {
+  font-size: 14px;
+  min-height: 44px;
+}
+:root .detail-title > p {
+  font-size: 17px;
+}
+:root .detail-facts,
+:root .amenity-list {
+  font-size: 14px;
+}
+:root .detail-description {
+  font-size: 16px;
+}
+:root .good-to-know strong {
+  font-size: 15px;
+}
+:root .good-to-know p {
+  font-size: 13px;
+}
+:root .reservation-head .eyebrow {
+  font-size: 11px;
+}
+:root .reservation-head h2 {
+  font-size: 25px;
+}
+:root .reservation-price > span {
+  font-size: 14px;
+}
+:root .availability-detail,
+:root .other-times,
+:root .party-field small {
+  font-size: 13px;
+}
+:root .booking-total > span,
+:root .party-field > div > span {
+  font-size: 15px;
+}
+:root .booking-total small,
+:root .panel-disclaimer,
+:root .panel-footer {
+  font-size: 12px;
+  line-height: 1.8;
+}
+:root .modal-subtitle {
+  font-size: 15px;
+}
+:root .review-card h3 {
+  font-size: 19px;
+}
+:root .review-card p {
+  font-size: 13px;
+}
+:root .demo-identity-label,
+:root .identity-note {
+  font-size: 12px;
+}
+:root .pass-category,
+:root .pass-unit,
+:root .pass-reference button {
+  font-size: 13px;
+}
+:root .pass-detail-grid > div > span,
+:root .pass-detail-grid strong > small {
+  font-size: 12px;
+}
+:root .pass-detail-grid strong {
+  font-size: 15px;
+}
+:root .pass-reference > span {
+  font-size: 10px;
+}
+:root .pass-qr > p,
+:root .pass-disclaimer {
+  font-size: 12px;
+}
+:root .pass-qr > strong {
+  font-size: 15px;
+}
+:root .qr-label {
+  font-size: 14px;
+}
+:root .sample-pill {
+  font-size: 10px;
+}
+:root .bookings-tabs button {
+  font-size: 15px;
+  min-height: 50px;
+}
+:root .booking-status,
+:root .booking-ref {
+  font-size: 12px;
+}
+:root .booking-card-details {
+  font-size: 14px;
+}
+:root .booking-card-bottom small,
+:root .bookings-storage-note {
+  font-size: 12px;
+}
+:root .booking-card-bottom > .button,
+:root .cancel-link {
+  font-size: 14px;
+}
+:root .empty-state > p {
+  font-size: 16px;
+}
+:root .toast {
+  font-size: 14px;
+}
+@media (max-width: 1100px) {
+  :root .quick-book {
+    grid-template-columns: 1fr 1fr auto;
+  }
+  :root .quick-book-title {
+    display: none;
+  }
+  :root .spaces-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  :root .nav-links {
+    font-size: 14px;
+    gap: 19px;
+  }
+  :root .concept-label {
+    display: none;
+  }
+  :root .explore-toolbar {
+    align-items: stretch;
+    gap: 20px;
+  }
+  :root .explore-dates {
+    gap: 15px;
+  }
+  :root .demo-note {
+    font-size: 12px;
+  }
+  :root .booking-card-details {
+    gap: 15px;
+  }
+}
+@media (max-width: 740px) {
+  :root .container,
+  :root .header-inner {
+    width: calc(100% - 32px);
+  }
+  :root .hero h1 {
+    font-size: clamp(43px, 10.7vw, 64px);
+  }
+  :root .hero-subtitle {
+    font-size: 17px;
+    line-height: 1.8;
+  }
+  :root .hero-location {
+    font-size: 12px;
+  }
+  :root .quick-book {
+    grid-template-columns: 1fr 1fr;
+    padding: 20px;
+    gap: 18px 12px;
+  }
+  :root .quick-book .button {
+    grid-column: 1/-1;
+  }
+  :root .quick-book .field {
+    padding-left: 10px;
+  }
+  :root .quick-book .field > span:first-child {
+    font-size: 12px;
+  }
+  :root .quick-book .field input,
+  :root .quick-book .field select {
+    font-size: 14px;
+  }
+  :root .quick-caption {
+    font-size: 11px;
+  }
+  :root .needs-grid {
+    gap: 12px;
+  }
+  :root .need-tile {
+    min-height: 190px;
+    padding: 22px 18px;
+  }
+  :root .need-tile p {
+    font-size: 13px;
+    max-width: calc(100% - 16px);
+  }
+  :root .need-tile h3 {
+    font-size: 26px;
+  }
+  :root .spaces-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  :root .space-card h3 {
+    font-size: 26px;
+  }
+  :root .card-art-link {
+    aspect-ratio: 1.5;
+  }
+  :root .card-title-row {
+    flex-direction: row;
+    align-items: center;
+  }
+  :root .card-amenities {
+    flex-direction: row;
+  }
+  :root .card-bottom {
+    flex-direction: row;
+    align-items: center;
+  }
+  :root .section-heading h2 {
+    font-size: 32px;
+  }
+  :root .eyebrow {
+    font-size: 11px;
+    letter-spacing: 1.2px;
+  }
+  :root .detail-layout {
+    grid-template-columns: 1fr;
+  }
+  :root .reservation-panel {
+    padding: 24px;
+  }
+  :root .explore-dates {
+    grid-template-columns: 1fr 1fr;
+  }
+  :root .explore-dates .field:first-child {
+    grid-column: 1/-1;
+  }
+  :root .demo-note {
+    margin-top: 18px;
+  }
+  :root .filter-row {
+    display: block;
+  }
+  :root .pass-detail-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 25px 16px;
+  }
+  :root .pass-detail-grid strong {
+    font-size: 13px;
+  }
+  :root .pass-detail-grid strong > small {
+    font-size: 11px;
+  }
+  :root .pass-reference {
+    flex-wrap: wrap;
+  }
+  :root .booking-card-top {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  :root .booking-card-details {
+    font-size: 13px;
+  }
+  :root .booking-card-bottom > strong {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  :root .modal-inner {
+    padding: 30px 23px;
+  }
+  :root .review-card {
+    grid-template-columns: 90px 1fr;
+  }
+  :root .review-card h3 {
+    font-size: 17px;
+  }
+  :root .review-card p {
+    font-size: 12px;
+  }
+  :root .footer-links {
+    gap: 15px 22px;
+  }
+}
+@media (max-width: 440px) {
+  :root .header-book {
+    display: none;
+  }
+  :root .hero-actions {
+    gap: 20px;
+  }
+  :root .hero-actions .button {
+    font-size: 14px;
+    padding-inline: 18px;
+    gap: 13px;
+  }
+  :root .hero-actions .button-plain {
+    padding-inline: 0;
+    gap: 7px;
+  }
+}
